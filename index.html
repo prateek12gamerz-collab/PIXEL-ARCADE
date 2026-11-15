@@ -4,567 +4,427 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PIXEL ARCADE | Play Beyond Limits</title>
+<title>PIXEL ARCADE</title>
 <style>
-:root {
-  --bg:#090b1b;
-  --panel:#151932;
-  --panel2:#20264a;
-  --yellow:#ffd43b;
-  --blue:#43b7ff;
-  --text:#f6f7ff;
-  --muted:#a6accb;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  background:radial-gradient(circle at top,#242052 0,#0b0d20 48%,#070817 100%);
-  color:var(--text);
-  font-family:Arial,sans-serif;
-  min-height:100vh;
-}
-button{font:inherit;cursor:pointer}
-header{
-  padding:17px 5%;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  border-bottom:1px solid #ffffff18;
-  background:#090b1bd9;
-  position:sticky;top:0;z-index:5;
-  backdrop-filter:blur(12px);
-}
-.logo{font-size:21px;font-weight:1000;letter-spacing:1px}
-.logo span{color:var(--yellow)}
-.sound{
-  background:var(--panel2);color:white;
-  border:1px solid #ffffff20;border-radius:30px;
-  padding:9px 13px;
-}
-main{max-width:1050px;margin:auto;padding:25px 16px 60px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#080b1b;color:white;min-height:100vh}
+header{padding:22px 15px;text-align:center;background:linear-gradient(120deg,#17104a,#25105d,#101b48);border-bottom:1px solid #603bba}
+header h1{font-size:30px;letter-spacing:3px;color:#c9a7ff;text-shadow:0 0 18px #8c45ff}
+header p{color:#c5b9e9;margin-top:8px}
+button{border:0;border-radius:12px;padding:12px 18px;background:#854cff;color:white;font-weight:bold;font-size:15px;cursor:pointer;margin:5px}
+button:active{transform:scale(.96)}
+button:hover{filter:brightness(1.2)}
+.secondary{background:#252b4b}
+.sound{position:absolute;right:12px;top:12px;background:#29264c}
+main{max-width:1000px;margin:auto;padding:20px}
 .screen{display:none}
-.screen.active{display:block;animation:appear .3s ease}
-@keyframes appear{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
-.hero{text-align:center;padding:42px 10px 30px}
-.tag{
-  display:inline-block;padding:8px 13px;border-radius:30px;
-  color:var(--yellow);background:#ffd43b18;
-  font-size:12px;font-weight:bold;letter-spacing:2px;
-}
-h1{font-size:clamp(37px,8vw,68px);margin:18px 0 8px;line-height:1}
-h1 span{color:var(--yellow)}
-.subtitle{color:var(--muted);line-height:1.6}
-.stats{
-  display:flex;justify-content:center;gap:12px;
-  flex-wrap:wrap;margin:25px 0;
-}
-.stat{
-  background:var(--panel);padding:12px 20px;
-  border-radius:13px;border:1px solid #ffffff12;
-  font-size:13px;color:var(--muted)
-}
-.stat b{color:white;font-size:18px;display:block;margin-bottom:4px}
-.section-title{font-size:23px;margin:25px 0 15px}
-.games{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:13px
-}
-.game{
-  background:linear-gradient(145deg,#20264a,#12162e);
-  border:1px solid #ffffff17;border-radius:17px;
-  padding:19px 12px;text-align:center;
-  min-height:145px;transition:.2s;
-}
-.game.available{cursor:pointer}
-.game.available:hover{transform:translateY(-4px);border-color:var(--yellow)}
-.game .emoji{font-size:35px;display:block;margin-bottom:10px}
-.game strong{display:block;font-size:14px}
-.game small{display:block;color:var(--muted);margin-top:7px;font-size:11px}
-.game.locked{opacity:.48}
-.primary,.secondary{
-  border:0;border-radius:12px;padding:14px 20px;
-  font-weight:900;transition:.2s;
-}
-.primary{background:var(--yellow);color:#171529}
-.primary:hover{filter:brightness(1.1);transform:translateY(-2px)}
-.secondary{background:var(--panel2);color:white;border:1px solid #ffffff20}
-.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:22px}
-.center{text-align:center}
-.card{
-  background:linear-gradient(145deg,#1c2245,#11152c);
-  border:1px solid #ffffff18;border-radius:20px;
-  padding:25px;margin:20px auto;max-width:570px;
-  text-align:center;
-}
-.big-emoji{font-size:52px;margin:10px}
-h2{font-size:28px;margin:12px 0}
-.muted{color:var(--muted);line-height:1.6}
-.choice{
-  width:100%;padding:17px;margin:7px 0;
-  border-radius:13px;border:1px solid #ffffff20;
-  color:white;background:#252b50;font-weight:bold;
-}
-.choice:hover{border-color:var(--yellow)}
-.choice.yellow{border-left:5px solid var(--yellow)}
-.choice.blue{border-left:5px solid var(--blue)}
-.back{background:none;color:var(--muted);border:0;padding:12px 0}
-.board{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:9px;max-width:330px;margin:24px auto;
-}
-.cell{
-  aspect-ratio:1;border:1px solid #ffffff20;
-  border-radius:14px;background:#252b50;
-  color:white;font-size:clamp(35px,10vw,55px);font-weight:bold;
-}
-.cell.x{color:var(--yellow)}
-.cell.o{color:var(--blue)}
-.status{
-  background:#ffffff0c;padding:14px;border-radius:12px;
-  font-weight:bold;margin:14px 0;
-}
-.scoreline{display:flex;justify-content:center;gap:30px;margin:18px}
-.scoreline b{display:block;font-size:23px;margin-top:5px}
-.yellow-text{color:var(--yellow)}
-.blue-text{color:var(--blue)}
-.reaction-area{
-  min-height:230px;border-radius:18px;
-  background:#252b50;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:12px;
-  padding:20px;margin:20px 0;
-}
-.reaction-area.wait{background:#7d283b}
-.reaction-area.go{background:#146b52}
-.reaction-area.done{background:#292d55}
-.reaction-area button{
-  border:0;border-radius:15px;padding:23px;
-  background:var(--yellow);color:#171529;
-  font-size:22px;font-weight:1000;width:100%;max-width:300px;
-}
-footer{text-align:center;color:#747b9e;font-size:12px;padding:25px}
-@media(max-width:600px){
- .games{grid-template-columns:repeat(2,1fr)}
- .hero{padding-top:30px}
- .game{min-height:130px}
- header{padding:14px}
-}
+.screen.active{display:block}
+.heading{text-align:center;margin:12px 0 22px}
+.heading h2{font-size:25px;color:#d7c1ff}
+.heading p{color:#aaa;margin-top:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:13px}
+.game-card{background:linear-gradient(145deg,#171d3d,#241344);border:1px solid #39305f;border-radius:17px;padding:18px 10px;text-align:center;cursor:pointer;transition:.2s;min-height:135px}
+.game-card:hover{transform:translateY(-5px);border-color:#a36aff;box-shadow:0 0 18px #6736a855}
+.game-card .emoji{font-size:38px;display:block;margin-bottom:10px}
+.game-card h3{font-size:15px}
+.game-card small{display:block;color:#a99bc8;margin-top:8px}
+.panel{background:#141a35;border:1px solid #37315e;border-radius:18px;padding:20px;text-align:center;margin:15px auto;max-width:600px}
+.options{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:15px 0}
+#gameArea{margin:18px auto;text-align:center}
+.status{color:#d5c5ff;font-size:18px;margin:14px}
+.board{display:grid;gap:6px;justify-content:center;margin:18px auto}
+.cell{width:75px;height:75px;border-radius:12px;background:#252b4b;color:white;font-size:32px;border:1px solid #51477c;display:grid;place-items:center;cursor:pointer}
+.cell:hover{background:#39315f}
+.ttt{grid-template-columns:repeat(3,75px)}
+.big{font-size:24px;color:#cbaaff}
+.memory{grid-template-columns:repeat(4,65px)}
+.memory .cell{width:65px;height:65px;font-size:25px}
+.board7{grid-template-columns:repeat(7,42px)}
+.board7 .cell{width:42px;height:42px;border-radius:50%;font-size:23px}
+.meter{height:24px;background:#292d4b;border-radius:20px;overflow:hidden;margin:20px auto;max-width:400px}
+.meter span{display:block;height:100%;width:50%;background:linear-gradient(90deg,#5ce1ff,#b14dff);transition:.1s}
+.bigbutton{font-size:25px;padding:22px 35px}
+footer{text-align:center;color:#777;padding:25px;font-size:12px}
+#intro{position:fixed;inset:0;background:#080719;z-index:10;display:grid;place-items:center;text-align:center;animation:fadeout 1s ease 2.2s forwards}
+#intro h1{font-size:42px;color:#c9a2ff;letter-spacing:4px;animation:pop 1s infinite alternate}
+#intro p{margin-top:15px;color:#b7a6df}
+@keyframes pop{from{transform:scale(.94);text-shadow:0 0 8px #804bff}to{transform:scale(1.06);text-shadow:0 0 30px #a34dff}}
+@keyframes fadeout{to{opacity:0;visibility:hidden}}
+.hidden{display:none!important}
+@media(max-width:450px){header h1{font-size:24px}.cell{width:65px;height:65px}.ttt{grid-template-columns:repeat(3,65px)}.memory{grid-template-columns:repeat(4,58px)}.memory .cell{width:58px;height:58px}.board7{grid-template-columns:repeat(7,37px)}.board7 .cell{width:37px;height:37px}}
 </style>
 </head>
 <body>
 
+<div id="intro"><div><h1>PIXEL ARCADE</h1><p>GET READY TO PLAY!</p></div></div>
+
 <header>
- <div class="logo">🎮 PIXEL <span>ARCADE</span></div>
- <button class="sound" id="soundBtn" onclick="toggleSound()">🔊 Sound</button>
+<button class="sound" onclick="toggleSound()" id="soundBtn">🔊 Sound ON</button>
+<h1>🎮 PIXEL ARCADE</h1>
+<p>12 Games • 2 Players • Endless Fun</p>
 </header>
 
 <main>
-
-<!-- HOME -->
 <section id="home" class="screen active">
- <div class="hero">
-  <div class="tag">WELCOME TO THE ARCADE</div>
-  <h1>PIXEL <span>ARCADE</span></h1>
-  <p class="subtitle">12 Games • 2 Players • Endless Fun<br>
-  Choose your game. Challenge your friends. Become a champion.</p>
-  <div class="stats">
-   <div class="stat"><b>12</b>Game Zones</div>
-   <div class="stat"><b>2</b>Player Mode</div>
-   <div class="stat"><b>∞</b>Fun</div>
-  </div>
- </div>
- <h3 class="section-title">🗺️ Choose Your Game</h3>
- <div class="games" id="games"></div>
+<div class="heading"><h2>CHOOSE YOUR GAME</h2><p>Select a game and challenge your skills!</p></div>
+<div class="grid" id="gameGrid"></div>
 </section>
 
-<!-- MODE -->
-<section id="mode" class="screen">
- <button class="back" onclick="show('home')">← Back to Arcade</button>
- <div class="card">
-  <div class="big-emoji" id="selectedEmoji">🎮</div>
-  <h2 id="selectedTitle">Choose Mode</h2>
-  <p class="muted">How do you want to play?</p>
-  <button class="choice yellow" onclick="chooseMode('friend')">
-   🟡 PLAY WITH FRIEND<br><small>Two players on the same device</small>
-  </button>
-  <button class="choice blue" onclick="chooseMode('bot')">
-   🤖 PLAY WITH BOT<br><small>Challenge the computer</small>
-  </button>
- </div>
+<section id="modeScreen" class="screen">
+<div class="panel">
+<h2 id="selectedTitle">Choose Mode</h2>
+<p class="status">How do you want to play?</p>
+<div class="options">
+<button onclick="chooseMode('friend')">👥 2 Players</button>
+<button onclick="chooseMode('bot')">🤖 Play vs Bot</button>
+</div>
+<button class="secondary" onclick="goHome()">← Back</button>
+</div>
 </section>
 
-<!-- DIFFICULTY -->
-<section id="difficulty" class="screen">
- <button class="back" onclick="show('mode')">← Back</button>
- <div class="card">
-  <div class="big-emoji">🤖</div>
-  <h2>Choose Difficulty</h2>
-  <p class="muted">How challenging should your opponent be?</p>
-  <button class="choice" onclick="startGame('easy')">🟢 EASY</button>
-  <button class="choice" onclick="startGame('medium')">🟡 MEDIUM</button>
-  <button class="choice" onclick="startGame('hard')">🔴 HARD</button>
- </div>
+<section id="difficultyScreen" class="screen">
+<div class="panel">
+<h2>SELECT DIFFICULTY</h2>
+<div class="options">
+<button onclick="startGame('Easy')">🟢 Easy</button>
+<button onclick="startGame('Medium')">🟡 Medium</button>
+<button onclick="startGame('Hard')">🔴 Hard</button>
+</div>
+<button class="secondary" onclick="show('modeScreen')">← Back</button>
+</div>
 </section>
 
-<!-- GAME -->
-<section id="game" class="screen">
- <button class="back" onclick="show('home')">← Exit to Arcade</button>
- <div class="center">
-  <div class="tag" id="gameModeTag">GAME MODE</div>
-  <h2 id="gameHeading">Game</h2>
-  <p class="muted" id="gameInstructions"></p>
- </div>
-
- <div id="ticArea" style="display:none">
-  <div class="scoreline">
-   <div class="yellow-text">🟡 Player X<b id="scoreX">0</b></div>
-   <div class="blue-text">🔵 Player O / Bot<b id="scoreO">0</b></div>
-  </div>
-  <div class="status" id="ticStatus">Player X's turn</div>
-  <div class="board" id="board"></div>
- </div>
-
- <div id="reactionArea" style="display:none">
-  <div class="scoreline">
-   <div class="yellow-text">🟡 Player 1<b id="rScore1">0</b></div>
-   <div class="blue-text">🔵 Player 2 / Bot<b id="rScore2">0</b></div>
-  </div>
-  <div class="status" id="rStatus">Press Start Round</div>
-  <div class="reaction-area" id="reactionBox">
-   <h2 id="reactionMessage">⚡ Reaction Duel</h2>
-   <p class="muted" id="reactionHint">Wait for GREEN, then tap!</p>
-   <button id="reactionStart" onclick="startReaction()">START ROUND</button>
-   <button id="reactionTap" style="display:none" onclick="reactionTap()">TAP NOW!</button>
-  </div>
- </div>
-
- <div class="actions">
-  <button class="primary" onclick="restartGame()">↻ Rematch</button>
-  <button class="secondary" onclick="show('home')">⌂ Home</button>
- </div>
+<section id="playScreen" class="screen">
+<div class="heading"><h2 id="gameTitle">GAME</h2><p id="gameSubtitle">Let's play!</p></div>
+<div id="gameArea"></div>
+<div style="text-align:center">
+<button class="secondary" onclick="restartGame()">↻ Restart</button>
+<button class="secondary" onclick="goHome()">🏠 Home</button>
+</div>
 </section>
-
-<!-- RESULT -->
-<section id="result" class="screen">
- <div class="card">
-  <div class="big-emoji">🏆</div>
-  <h2 id="resultTitle">Winner!</h2>
-  <p class="muted" id="resultText"></p>
-  <div class="actions">
-   <button class="primary" onclick="restartGame()">PLAY AGAIN</button>
-   <button class="secondary" onclick="show('home')">ARCADE HOME</button>
-  </div>
- </div>
-</section>
-
 </main>
-<footer>PIXEL ARCADE • Made with ❤️ by PRATEEK</footer>
+<footer>© 2026 PIXEL ARCADE • Made for fun ❤️</footer>
 
 <script>
-const gameList=[
- ["Chess","♟️",false],
- ["Air Hockey","🏒",false],
- ["Mini Racing","🏎️",false],
- ["Sumo Tap Battle","💪",false],
- ["Tic Tac Toe","❌",true],
- ["Connect Four","🔴",false],
- ["Checkers","⚫",false],
- ["Reaction Duel","⚡",true],
- ["Tug of War","🪢",false],
- ["Maze Race","🌀",false],
- ["Memory Match","🧠",false],
- ["Tower Builder","🏗️",false]
+const games=[
+["Chess","♟️"],["Air Hockey","🏒"],["Mini Racing","🏎️"],["Sumo Tap Battle","💪"],
+["Tic Tac Toe","❌"],["Connect Four","🔴"],["Checkers","⚫"],["Reaction Duel","⚡"],
+["Tug of War","🪢"],["Maze Race","🌀"],["Memory Match","🧠"],["Tower Builder","🏗️"]
 ];
-
-let selected="",mode="friend",difficulty="easy",sound=true;
-let cells=[],turn="X",gameOver=false,scoreX=0,scoreO=0;
-let rScore1=0,rScore2=0,rTimer=null,rStart=0,rState="idle",rRound=0;
-let botTimer=null;
-
+let current="",mode="friend",difficulty="Easy",sound=true,audioCtx=null,turn=0,board=[],score=[0,0],locked=false,interval=null,round=1;
 const $=id=>document.getElementById(id);
 
-function show(id){
- document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
- $(id).classList.add("active");
- window.scrollTo(0,0);
-}
-
 function buildGames(){
- $("games").innerHTML=gameList.map(g=>`
- <div class="game ${g[2]?"available":"locked"}"
- ${g[2]?`onclick="selectGame('${g[0]}')"`:""}>
- <span class="emoji">${g[1]}</span>
- <strong>${g[0]}</strong>
- <small>${g[2]?"▶ PLAY NOW":"🔒 COMING SOON"}</small>
- </div>`).join("");
+$("gameGrid").innerHTML=games.map(g=>`
+<div class="game-card" onclick="selectGame('${g[0]}')">
+<span class="emoji">${g[1]}</span><h3>${g[0]}</h3><small>▶ PLAY NOW</small>
+</div>`).join("");
 }
 buildGames();
 
+function show(id){
+document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+$(id).classList.add("active");
+}
 function selectGame(name){
- selected=name;
- const g=gameList.find(x=>x[0]===name);
- $("selectedEmoji").textContent=g[1];
- $("selectedTitle").textContent=name;
- show("mode");
+current=name;
+$("selectedTitle").textContent=name;
+show("modeScreen");
+beep(500);
 }
-
 function chooseMode(m){
- mode=m;
- if(m==="bot")show("difficulty");
- else startGame("friend");
+mode=m;
+if(["Tic Tac Toe","Connect Four","Memory Match","Reaction Duel","Chess","Checkers"].includes(current)){
+show("difficultyScreen");
+}else startGame("Medium");
 }
-
-function startGame(d){
- difficulty=d;
- clearTimeout(botTimer);
- clearTimeout(rTimer);
- if(selected==="Tic Tac Toe"){
-  scoreX=0;scoreO=0;resetTic();
-  $("ticArea").style.display="block";
-  $("reactionArea").style.display="none";
-  $("gameInstructions").textContent="Make a line of three symbols to win!";
- }else if(selected==="Reaction Duel"){
-  rScore1=0;rScore2=0;rRound=0;
-  updateReactionScore();
-  resetReaction();
-  $("ticArea").style.display="none";
-  $("reactionArea").style.display="block";
-  $("gameInstructions").textContent="Wait for the green signal. Tap as quickly as possible!";
- }
- $("gameHeading").textContent=selected;
- $("gameModeTag").textContent=mode==="bot"?"🤖 VS BOT • "+d.toUpperCase():"🟡 LOCAL MULTIPLAYER";
- show("game");
+function goHome(){
+clearInterval(interval);
+show("home");
 }
-
 function restartGame(){startGame(difficulty)}
+function startGame(d){
+difficulty=d;turn=0;score=[0,0];round=1;locked=false;
+clearInterval(interval);
+$("gameTitle").textContent=current;
+$("gameSubtitle").textContent=(mode==="bot"?"Playing vs Bot":"2 Player Mode")+" • "+difficulty;
+show("playScreen");
+const area=$("gameArea");area.innerHTML="";
+switch(current){
+case "Tic Tac Toe":ticTacToe();break;
+case "Reaction Duel":reaction();break;
+case "Connect Four":connectFour();break;
+case "Memory Match":memory();break;
+case "Sumo Tap Battle":case "Tug of War":tapBattle();break;
+case "Tower Builder":tower();break;
+case "Maze Race":maze();break;
+case "Mini Racing":racing();break;
+case "Air Hockey":hockey();break;
+case "Chess":chess();break;
+case "Checkers":checkers();break;
+}
+beep(650);
+}
+function status(t){let e=document.querySelector(".status");if(e)e.textContent=t}
+function beep(freq=440){
+if(!sound)return;
+try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();
+let o=audioCtx.createOscillator(),g=audioCtx.createGain();
+o.frequency.value=freq;g.gain.value=.04;o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+.09);
+}catch(e){}
+}
+function toggleSound(){sound=!sound;$("soundBtn").textContent=sound?"🔊 Sound ON":"🔇 Sound OFF";}
 
-function result(title,txt){
- $("resultTitle").textContent=title;
- $("resultText").textContent=txt;
- show("result");
+// TIC TAC TOE
+function ticTacToe(){
+board=Array(9).fill("");
+$("gameArea").innerHTML='<div class="status" id="tttStatus">Player X turn</div><div class="board ttt" id="tttBoard"></div>';
+drawTTT();
 }
-
-/* TIC TAC TOE */
-function resetTic(){
- cells=["","","","","","","","",""];
- turn="X";gameOver=false;
- drawBoard();
- $("ticStatus").textContent="🟡 Player X's turn";
- $("scoreX").textContent=scoreX;
- $("scoreO").textContent=scoreO;
+function drawTTT(){
+$("tttBoard").innerHTML=board.map((v,i)=>`<div class="cell" onclick="tttMove(${i})">${v}</div>`).join("");
 }
-function drawBoard(){
- $("board").innerHTML="";
- cells.forEach((v,i)=>{
-  const b=document.createElement("button");
-  b.className="cell "+(v==="X"?"x":"o");
-  b.textContent=v;
-  b.onclick=()=>ticMove(i);
-  b.disabled=!!v||gameOver||(mode==="bot"&&turn==="O");
-  $("board").appendChild(b);
- });
+function tttMove(i){
+if(board[i]||locked)return;
+board[i]=turn%2===0?"X":"O";turn++;beep();
+drawTTT();
+let win=winner(board);
+if(win){$("tttStatus").textContent=win+" wins! 🎉";locked=true;return}
+if(board.every(Boolean)){$("tttStatus").textContent="It's a draw!";locked=true;return}
+$("tttStatus").textContent=(turn%2===0?"Player X":"Player O")+" turn";
+if(mode==="bot"&&turn%2===1){
+locked=true;
+setTimeout(()=>{
+let move=bestMove(board);
+if(move!==-1){board[move]="O";turn++;drawTTT()}
+let w=winner(board);
+if(w){$("tttStatus").textContent="Bot wins! 🤖";locked=true}
+else if(board.every(Boolean)){$("tttStatus").textContent="Draw!";locked=true}
+else {$("tttStatus").textContent="Your turn";locked=false}
+},450);
 }
-const wins=[
- [0,1,2],[3,4,5],[6,7,8],
- [0,3,6],[1,4,7],[2,5,8],
- [0,4,8],[2,4,6]
-];
+}
 function winner(b){
- for(const line of wins){
-  const [a,c,d]=line;
-  if(b[a]&&b[a]===b[c]&&b[c]===b[d])return b[a];
- }
- return b.every(Boolean)?"draw":null;
+for(let a of [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]){
+if(b[a[0]]&&b[a[0]]===b[a[1]]&&b[a[1]]===b[a[2]])return b[a[0]];
+}return "";
 }
-function ticMove(i){
- if(cells[i]||gameOver)return;
- cells[i]=turn;
- playSound(400);
- const w=winner(cells);
- if(w){finishTic(w);return}
- turn=turn==="X"?"O":"X";
- $("ticStatus").textContent=turn==="X"?"🟡 Player X's turn":
-  (mode==="bot"?"🤖 Bot is thinking...":"🔵 Player O's turn");
- drawBoard();
- if(mode==="bot"&&turn==="O"){
-  botTimer=setTimeout(botMove,400);
- }
+function bestMove(b){
+let empty=b.map((v,i)=>v?null:i).filter(v=>v!==null);
+if(!empty.length)return -1;
+if(difficulty==="Easy")return empty[Math.floor(Math.random()*empty.length)];
+for(let p of ["O","X"]){
+for(let i of empty){let c=[...b];c[i]=p;if(winner(c))return i}
 }
-function finishTic(w){
- gameOver=true;
- drawBoard();
- if(w==="X"){
-  scoreX++;$("ticStatus").textContent="🏆 Player X wins!";
- }else if(w==="O"){
-  scoreO++;$("ticStatus").textContent=mode==="bot"?"🤖 Bot wins!":"🏆 Player O wins!";
- }else $("ticStatus").textContent="🤝 It's a draw!";
- $("scoreX").textContent=scoreX;
- $("scoreO").textContent=scoreO;
- if(w)playSound(700);
-}
-function botMove(){
- if(gameOver)return;
- let move;
- if(difficulty==="hard"){
-  move=bestMove();
- }else if(difficulty==="medium"){
-  move=findWinningMove("O");
-  if(move===undefined)move=findWinningMove("X");
-  if(move===undefined)move=randomMove();
- }else{
-  move=Math.random()<.45?findWinningMove("O"):undefined;
-  if(move===undefined)move=randomMove();
- }
- if(move!==undefined)ticMove(move);
-}
-function randomMove(){
- const free=cells.map((v,i)=>v===""?i:null).filter(v=>v!==null);
- return free[Math.floor(Math.random()*free.length)];
-}
-function findWinningMove(p){
- for(let i=0;i<9;i++){
-  if(!cells[i]){
-   let copy=[...cells];copy[i]=p;
-   if(winner(copy)===p)return i;
-  }
- }
-}
-function bestMove(){
- let best=-Infinity,move;
- for(let i=0;i<9;i++){
-  if(!cells[i]){
-   cells[i]="O";
-   let score=minimax(cells,0,false);
-   cells[i]="";
-   if(score>best){best=score;move=i}
-  }
- }
- return move;
-}
-function minimax(b,depth,isMax){
- const w=winner(b);
- if(w==="O")return 10-depth;
- if(w==="X")return depth-10;
- if(w==="draw")return 0;
- if(isMax){
-  let best=-Infinity;
-  for(let i=0;i<9;i++)if(!b[i]){
-   b[i]="O";best=Math.max(best,minimax(b,depth+1,false));b[i]="";
-  }
-  return best;
- }else{
-  let best=Infinity;
-  for(let i=0;i<9;i++)if(!b[i]){
-   b[i]="X";best=Math.min(best,minimax(b,depth+1,true));b[i]="";
-  }
-  return best;
- }
+if(b[4]==="")return 4;
+return empty[Math.floor(Math.random()*empty.length)];
 }
 
-/* REACTION DUEL */
-function updateReactionScore(){
- $("rScore1").textContent=rScore1;
- $("rScore2").textContent=rScore2;
+// REACTION DUEL
+function reaction(){
+$("gameArea").innerHTML=`<div class="status" id="reactStatus">Wait for GREEN... Round 1</div>
+<button class="bigbutton" id="reactBtn" disabled onclick="reactClick()">WAIT...</button>
+<div class="status" id="reactScore">Player 1: 0 | Player 2: 0</div>`;
+nextReaction();
 }
-function resetReaction(){
- clearTimeout(rTimer);
- clearTimeout(botTimer);
- rState="idle";
- $("reactionBox").className="reaction-area";
- $("reactionMessage").textContent="⚡ Reaction Duel";
- $("reactionHint").textContent="Wait for GREEN, then tap!";
- $("reactionStart").style.display="block";
- $("reactionTap").style.display="none";
- $("rStatus").textContent="Press Start Round";
+function nextReaction(){
+locked=true;
+$("reactBtn").disabled=true;$("reactBtn").style.background="#555";
+$("reactBtn").textContent="WAIT...";
+$("reactStatus").textContent="Wait for green signal...";
+let delay=1200+Math.random()*2500;
+interval=setTimeout(()=>{
+locked=false;$("reactBtn").disabled=false;$("reactBtn").textContent="TAP NOW!";
+$("reactBtn").style.background="#16a45b";
+$("reactStatus").textContent="GO! ⚡";
+beep(900);
+},delay);
 }
-function startReaction(){
- clearTimeout(rTimer);
- clearTimeout(botTimer);
- rState="wait";
- rRound++;
- $("reactionBox").className="reaction-area wait";
- $("reactionMessage").textContent="🔴 WAIT...";
- $("reactionHint").textContent="Don't tap yet!";
- $("reactionStart").style.display="none";
- $("reactionTap").style.display="block";
- $("reactionTap").disabled=false;
- $("reactionTap").textContent="WAIT...";
- $("rStatus").textContent="Wait for the green signal!";
- rTimer=setTimeout(()=>{
-  if(rState!=="wait")return;
-  rState="go";rStart=Date.now();
-  $("reactionBox").className="reaction-area go";
-  $("reactionMessage").textContent="🟢 GO GO GO!";
-  $("reactionHint").textContent="TAP NOW!";
-  $("reactionTap").textContent="TAP NOW!";
-  $("rStatus").textContent="Signal is GREEN!";
-  playSound(850);
-  if(mode==="bot"){
-   const delay=difficulty==="easy"?850+Math.random()*500:
-    difficulty==="medium"?400+Math.random()*450:180+Math.random()*350;
-   botTimer=setTimeout(()=>{
-    if(rState==="go")reactionFinish(2,Date.now()-rStart);
-   },delay);
-  }
- },1500+Math.random()*3000);
+function reactClick(){
+if(locked)return;
+locked=true;
+let player=mode==="bot"?1:(turn%2+1);
+score[player-1]++;
+$("reactScore").textContent=`Player 1: ${score[0]} | Player 2: ${score[1]}`;
+$("reactStatus").textContent=`Player ${player} wins round ${round}!`;
+$("reactBtn").textContent="NEXT ROUND";
+$("reactBtn").style.background="#854cff";
+$("reactBtn").onclick=()=>{
+round++;turn++;$("reactBtn").onclick=reactClick;nextReaction();
+};
 }
-function reactionTap(){
- if(rState==="wait"){
-  rState="early";
-  clearTimeout(rTimer);
-  $("reactionMessage").textContent="❌ TOO EARLY!";
-  $("reactionHint").textContent="Wait for the green signal next time.";
-  $("reactionTap").style.display="none";
-  $("reactionBox").className="reaction-area done";
-  $("rStatus").textContent="False start! Bot / Player 2 wins this round.";
-  if(mode==="bot")rScore2++;
-  else rScore2++;
-  updateReactionScore();
-  $("reactionStart").style.display="block";
-  $("reactionStart").textContent="NEXT ROUND";
-  return;
- }
- if(rState==="go")reactionFinish(1,Date.now()-rStart);
+
+// CONNECT FOUR
+function connectFour(){
+board=Array(42).fill("");
+$("gameArea").innerHTML='<div class="status" id="cStatus">Red turn 🔴</div><div class="board board7" id="cBoard"></div>';
+drawConnect();
 }
-function reactionFinish(player,time){
- if(rState!=="go")return;
- rState="done";
- clearTimeout(botTimer);
- $("reactionBox").className="reaction-area done";
- $("reactionTap").style.display="none";
- $("reactionStart").style.display="block";
- $("reactionStart").textContent="NEXT ROUND";
- const who=player===1?"🟡 Player 1":(mode==="bot"?"🤖 Bot":"🔵 Player 2");
- if(player===1)rScore1++;else rScore2++;
- updateReactionScore();
- $("reactionMessage").textContent=who+" WINS!";
- $("reactionHint").textContent="Reaction time: "+time+" ms";
- $("rStatus").textContent=who+" wins this round!";
- playSound(650);
- if(rScore1>=3||rScore2>=3){
-  setTimeout(()=>result(
-   rScore1>rScore2?"🏆 Player 1 Wins!":
-   (mode==="bot"?"🤖 Bot Wins!":"🏆 Player 2 Wins!"),
-   "Final score: "+rScore1+" - "+rScore2
-  ),700);
- }
+function drawConnect(){
+$("cBoard").innerHTML=Array.from({length:42},(_,i)=>`<div class="cell" onclick="dropDisc(${i%7})">${board[i]==="R"?"🔴":board[i]==="Y"?"🟡":" "}</div>`).join("");
 }
-function toggleSound(){
- sound=!sound;
- $("soundBtn").textContent=sound?"🔊 Sound":"🔇 Muted";
+function dropDisc(col){
+if(locked)return;
+let row=-1;
+for(let r=5;r>=0;r--){if(!board[r*7+col]){row=r;break}}
+if(row<0)return;
+let p=turn%2===0?"R":"Y";board[row*7+col]=p;turn++;drawConnect();beep();
+if(connectWin(p)){ $("cStatus").textContent=(p==="R"?"Red":"Yellow")+" wins!";locked=true;return}
+if(board.every(Boolean)){ $("cStatus").textContent="Draw!";locked=true;return}
+$("cStatus").textContent=(turn%2===0?"Red":"Yellow")+" turn";
+if(mode==="bot"&&turn%2===1){
+locked=true;setTimeout(()=>{
+let c=Math.floor(Math.random()*7);locked=false;dropDisc(c);
+},450);
 }
-function playSound(freq){
- if(!sound)return;
- try{
-  const ctx=new(window.AudioContext||window.webkitAudioContext)();
-  const osc=ctx.createOscillator();
-  const gain=ctx.createGain();
-  osc.frequency.value=freq;
-  gain.gain.value=.06;
-  osc.connect(gain);gain.connect(ctx.destination);
-  osc.start();osc.stop(ctx.currentTime+.12);
-  osc.onended=()=>ctx.close();
- }catch(e){}
+}
+function connectWin(p){
+for(let r=0;r<6;r++)for(let c=0;c<7;c++){
+for(let [dr,dc] of [[0,1],[1,0],[1,1],[1,-1]]){
+let ok=true;for(let k=0;k<4;k++){let rr=r+dr*k,cc=c+dc*k;if(rr<0||rr>=6||cc<0||cc>=7||board[rr*7+cc]!==p)ok=false}
+if(ok)return true;
+}}return false;
+}
+
+// MEMORY MATCH
+function memory(){
+let icons=["🍕","🚀","🎮","🐱","⚽","🍩","🎧","⭐"];
+let deck=[...icons,...icons].sort(()=>Math.random()-.5),open=[],matched=[];
+$("gameArea").innerHTML='<div class="status" id="memStatus">Find all matching pairs!</div><div class="board memory" id="memBoard"></div>';
+$("memBoard").innerHTML=deck.map((v,i)=>`<div class="cell" id="mem${i}" onclick="flipCard(${i},'${v}')">?</div>`).join("");
+window.memDeck=deck;window.memOpen=open;window.memMatched=matched;
+}
+function flipCard(i,v){
+if(window.memMatched.includes(i)||window.memOpen.includes(i)||window.memOpen.length===2)return;
+$("mem"+i).textContent=v;window.memOpen.push(i);beep();
+if(window.memOpen.length===2){
+let [a,b]=window.memOpen;
+if(window.memDeck[a]===window.memDeck[b]){
+window.memMatched.push(a,b);window.memOpen=[];
+$("memStatus").textContent="Match found! 🎉";
+if(window.memMatched.length===16)$("memStatus").textContent="YOU WON! 🏆";
+}else setTimeout(()=>{ $("mem"+a).textContent="?";$("mem"+b).textContent="?";window.memOpen=[];},750);
+}
+}
+
+// SUMO / TUG
+function tapBattle(){
+let title=current==="Sumo Tap Battle"?"Tap to push your opponent!":"Tap to pull the rope!";
+$("gameArea").innerHTML=`<div class="status" id="tapStatus">${title}</div>
+<div class="meter"><span id="meterBar"></span></div>
+<div class="big" id="tapScore">0 : 0</div>
+<button class="bigbutton" onclick="tapPoint(0)">🔵 PLAYER 1 TAP</button>
+${mode==="friend"?'<button class="bigbutton" onclick="tapPoint(1)">🔴 PLAYER 2 TAP</button>':'<p class="status">Bot is playing too!</p>'}`;
+window.tapValue=50;
+if(mode==="bot")interval=setInterval(()=>{if(!locked)tapPoint(1)},difficulty==="Easy"?900:difficulty==="Medium"?600:350);
+}
+function tapPoint(p){
+if(locked)return;
+window.tapValue+=p===0?5:-5;
+window.tapValue=Math.max(0,Math.min(100,window.tapValue));
+$("meterBar").style.width=window.tapValue+"%";
+$("tapScore").textContent=Math.round(window.tapValue)+" : "+(100-Math.round(window.tapValue));
+if(window.tapValue>=100||window.tapValue<=0){
+locked=true;clearInterval(interval);
+$("tapStatus").textContent=(window.tapValue>=100?"PLAYER 1":"PLAYER 2")+" WINS! 🏆";
+beep(950);
+}else beep(400);
+}
+
+// TOWER BUILDER
+function tower(){
+window.towerHeight=0;window.towerMax=10;
+$("gameArea").innerHTML='<div class="status" id="towerStatus">Build the tallest tower!</div><div id="towerStack" style="font-size:35px;min-height:220px;display:flex;flex-direction:column-reverse;align-items:center;justify-content:flex-start"></div><button class="bigbutton" onclick="addTower()">🏗️ BUILD!</button>';
+}
+function addTower(){
+if(window.towerHeight>=window.towerMax)return;
+window.towerHeight++;
+$("towerStack").innerHTML+="<div>🧱</div>";
+$("towerStatus").textContent="Tower height: "+window.towerHeight;
+beep(400+window.towerHeight*30);
+if(window.towerHeight===window.towerMax)$("towerStatus").textContent="Amazing! Tower completed! 🏆";
+}
+
+// MAZE RACE
+function maze(){
+window.mazePos=0;
+$("gameArea").innerHTML='<div class="status" id="mazeStatus">Reach the finish line!</div><div id="mazeTrack" style="font-size:28px;letter-spacing:7px;margin:30px 0">🏃⬜⬜⬜⬜⬜⬜🏁</div><div class="options"><button onclick="moveMaze(-1)">⬅️</button><button onclick="moveMaze(1)">➡️</button></div>';
+}
+function moveMaze(d){
+window.mazePos=Math.max(0,Math.min(6,window.mazePos+d));
+let s="";for(let i=0;i<7;i++)s+=i===window.mazePos?"🏃":"⬜";
+$("mazeTrack").textContent=s+"🏁";
+if(window.mazePos===6)$("mazeStatus").textContent="FINISH! YOU WON! 🏆";
+beep();
+}
+
+// MINI RACING
+function racing(){
+window.carLane=1;window.racePos=0;
+$("gameArea").innerHTML='<div class="status" id="raceStatus">Switch lanes and reach 10!</div><div id="raceTrack" style="font-size:35px;line-height:2">⬜ 🏎️ ⬜</div><div class="status" id="racePos">Distance: 0 / 10</div><div class="options"><button onclick="lane(-1)">⬅️ LEFT</button><button onclick="lane(1)">RIGHT ➡️</button></div><button onclick="drive()">🏎️ ACCELERATE</button>';
+}
+function lane(d){window.carLane=Math.max(0,Math.min(2,window.carLane+d));drawRace()}
+function drawRace(){$("raceTrack").textContent=[0,1,2].map(i=>i===window.carLane?"🏎️":"⬜").join("  ")}
+function drive(){
+if(window.racePos>=10)return;
+window.racePos++;
+$("racePos").textContent="Distance: "+window.racePos+" / 10";
+if(Math.random()<.25){$("raceStatus").textContent="Obstacle! Change lane!";beep(180)}
+else $("raceStatus").textContent="Keep going!";
+if(window.racePos===10)$("raceStatus").textContent="YOU FINISHED THE RACE! 🏆";
+}
+
+// AIR HOCKEY
+function hockey(){
+window.hockeyScore=[0,0];
+$("gameArea").innerHTML='<div class="status" id="hStatus">Tap the puck to score!</div><div style="border:3px solid #80dfff;border-radius:18px;height:230px;background:linear-gradient(#182b50,#26365a);display:grid;place-items:center;margin:20px"><button class="bigbutton" id="puck" onclick="hitPuck()">🏒 🥅</button></div><div class="status" id="hScore">Player 1: 0 | Player 2: 0</div>';
+}
+function hitPuck(){
+let p=mode==="bot"?1:Math.floor(Math.random()*2);
+window.hockeyScore[p]++;
+$("hScore").textContent=`Player 1: ${window.hockeyScore[0]} | Player 2: ${window.hockeyScore[1]}`;
+$("hStatus").textContent="Goal! Player "+(p+1)+" scores!";
+beep(800);
+}
+
+// CHESS - MINI BOARD
+function chess(){
+let pieces=["♜","♞","♝","♛","♚","♝","♞","♜","♟","♟","♟","♟","♟","♟","♟","♟"];
+let back=["♜","♞","♝","♛","♚","♝","♞","♜"];
+window.chessBoard=Array(64).fill("");
+for(let i=0;i<8;i++){window.chessBoard[i]=back[i];window.chessBoard[i+8]="♟";window.chessBoard[48+i]="♙";window.chessBoard[56+i]=["♖","♘","♗","♕","♔","♗","♘","♖"][i]}
+window.chessPick=-1;
+$("gameArea").innerHTML='<div class="status" id="chStatus">Select a piece, then select a square.</div><div class="board" id="chBoard" style="grid-template-columns:repeat(8,38px);gap:2px"></div>';
+drawChess();
+}
+function drawChess(){
+$("chBoard").innerHTML=window.chessBoard.map((v,i)=>`<div onclick="chessTap(${i})" style="width:38px;height:38px;background:${(Math.floor(i/8)+i%8)%2?"#786b91":"#e1d6c9"};color:#171327;font-size:25px;display:grid;place-items:center">${v}</div>`).join("");
+}
+function chessTap(i){
+if(window.chessPick<0){if(!window.chessBoard[i])return;window.chessPick=i;$("chStatus").textContent="Now choose a destination square.";return}
+window.chessBoard[i]=window.chessBoard[window.chessPick];window.chessBoard[window.chessPick]="";window.chessPick=-1;drawChess();$("chStatus").textContent="Piece moved!";
+}
+
+// CHECKERS - BASIC BOARD
+function checkers(){
+window.checkBoard=Array(64).fill("");
+for(let r=0;r<3;r++)for(let c=0;c<8;c++)if((r+c)%2)window.checkBoard[r*8+c]="🔴";
+for(let r=5;r<8;r++)for(let c=0;c<8;c++)if((r+c)%2)window.checkBoard[r*8+c]="⚫";
+window.checkPick=-1;
+$("gameArea").innerHTML='<div class="status" id="checkStatus">Select a checker and move it diagonally.</div><div class="board" id="checkBoardUI" style="grid-template-columns:repeat(8,36px);gap:2px"></div>';
+drawCheck();
+}
+function drawCheck(){
+$("checkBoardUI").innerHTML=window.checkBoard.map((v,i)=>`<div onclick="checkTap(${i})" style="width:36px;height:36px;background:${(Math.floor(i/8)+i%8)%2?"#705a42":"#e4d1ad"};display:grid;place-items:center;font-size:23px">${v}</div>`).join("");
+}
+function checkTap(i){
+if(window.checkPick<0){if(!window.checkBoard[i])return;window.checkPick=i;$("checkStatus").textContent="Choose a square.";return}
+let a=window.checkPick;
+if(!window.checkBoard[i]&&Math.abs(i%8-a%8)===1&&Math.abs(Math.floor(i/8)-Math.floor(a/8))===1){
+window.checkBoard[i]=window.checkBoard[a];window.checkBoard[a]="";$("checkStatus").textContent="Moved!";
+}else $("checkStatus").textContent="Try a diagonal square.";
+window.checkPick=-1;drawCheck();
 }
 </script>
 </body>
-  </html>
-  
+</html>
